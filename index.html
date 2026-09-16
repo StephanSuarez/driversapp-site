@@ -60,6 +60,9 @@
     .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; padding: 48px 0 0; }
     .hero h1 { font-size: clamp(44px, 7vw, 72px); margin-top: 12px; }
     .hero .lead { font-size: 20px; }
+    .team { margin: 16px 0 0; font-size: 15px; color: var(--muted); }
+    .team a { color: var(--text); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--line); }
+    .team a:hover { border-color: var(--text); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; font-weight: 600; font-size: 16px; text-decoration: none; }
     .btn-primary { background: var(--button); color: var(--button-text); }
@@ -176,7 +179,6 @@
   <div class="wrap">
     <header>
       <a class="brand" href="#"><img src="media/mark.png" alt="">DriversApp</a>
-      <a class="nav-link" href="https://github.com/StephanSuarez">@StephanSuarez</a>
     </header>
 
     <main>
@@ -185,6 +187,7 @@
           <p class="eyebrow r">Caso de estudio · Full stack</p>
           <h1 class="r" style="--d:60ms">DriversApp</h1>
           <p class="lead r" style="--d:120ms">Plataforma de transporte para conductores de taxi en Bogotá: app móvil, API, panel de administración y web pública.</p>
+          <p class="team r" style="--d:150ms">Hecho por <a href="https://github.com/StephanSuarez">@StephanSuarez</a> y <a href="https://github.com/jhonatandgomez">@jhonatandgomez</a></p>
           <div class="actions r" style="--d:180ms">
             <a class="btn btn-primary" href="#repos">Ver el código</a>
             <a class="btn btn-secondary" href="#flujo">Cómo funciona un viaje</a>
@@ -310,7 +313,7 @@
 
     <footer>
       <span>Capturas y video con datos de demostración: personas, placas y documentos son ficticios; el chat de WhatsApp es una recreación con los mensajes reales del bot. Modelo 3D del taxi: <a href="https://sketchfab.com/3d-models/taxi-2-0b5310fbf2c14b3e807c63f2ee1ca7bf">“Taxi 2”</a> de solid3DDD, <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span>
-      <a href="https://github.com/StephanSuarez">@StephanSuarez</a>
+      <span><a href="https://github.com/StephanSuarez">@StephanSuarez</a> · <a href="https://github.com/jhonatandgomez">@jhonatandgomez</a></span>
     </footer>
   </div>
   <dialog id="viewer" aria-label="Imagen ampliada">
