@@ -6,6 +6,7 @@
   <title>DriversApp · Caso de estudio</title>
   <meta name="description" content="Plataforma de transporte para conductores de taxi en Bogotá: app móvil en Flutter, API en Kotlin, panel de administración y web pública.">
   <link rel="icon" href="media/mark.png">
+  <script>document.documentElement.classList.add("js")</script>
   <style>
     :root {
       --bg: #fbfbf8;
@@ -63,6 +64,10 @@
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; font-weight: 600; font-size: 16px; text-decoration: none; }
     .btn-primary { background: var(--button); color: var(--button-text); }
     .btn-secondary { border: 1px solid var(--line); background: var(--surface); }
+    .btn { transition: transform 0.15s ease-out, opacity 0.15s ease-out, border-color 0.15s ease-out; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary:hover { border-color: var(--text); }
+    .btn:active { transform: scale(0.98); }
     .phone {
       justify-self: center;
       width: min(320px, 78vw);
@@ -97,6 +102,16 @@
     .phones figcaption { margin-top: 10px; text-align: center; font-size: 14px; color: var(--muted); }
     .note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 
+    /* Panel de operación */
+    .shot { margin: 0; }
+    .shot.main { margin-top: 40px; }
+    .browser { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06); }
+    .bar { display: flex; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+    .bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+    .browser img { display: block; width: 100%; height: auto; }
+    .shot figcaption { margin-top: 12px; font-size: 15px; color: var(--muted); }
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+
     /* Arquitectura */
     .arch { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 40px; }
     .col { display: grid; gap: 10px; }
@@ -112,8 +127,9 @@
 
     /* Repositorios */
     .repos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 40px; }
-    .repo { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; text-decoration: none; transition: border-color 0.15s; }
-    .repo:hover { border-color: var(--text); }
+    .repo { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; text-decoration: none; transition: border-color 0.2s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out; }
+    .repo:hover { border-color: var(--text); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06); }
+    .repo:active { transform: translateY(0) scale(0.99); }
     .repo h3 { font-size: 18px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
     .repo p { margin: 6px 0 14px; color: var(--muted); font-size: 15px; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -129,13 +145,20 @@
       .phones { max-width: none; justify-self: stretch; gap: 12px; }
       .arch { grid-template-columns: 1fr; }
       .arrow span { transform: rotate(90deg); }
-      .notes, .repos { grid-template-columns: 1fr; }
+      .notes, .repos, .shots { grid-template-columns: 1fr; }
     }
     @media (max-width: 520px) {
       .wrap { padding: 0 16px; }
       .features { grid-template-columns: 1fr; }
     }
-    @media (prefers-reduced-motion: reduce) { .repo { transition: none; } }
+    /* Aparición al hacer scroll. Sin JavaScript o con movimiento reducido, todo se ve de inmediato. */
+    .js .r { opacity: 0; transform: translateY(12px); transition: opacity 0.45s ease-out, transform 0.45s ease-out; transition-delay: var(--d, 0ms); }
+    .js .r.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .js .r { opacity: 1; transform: none; transition: none; }
+      .btn, .repo { transition: none; }
+      .repo:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -148,117 +171,128 @@
     <main>
       <div class="hero">
         <div>
-          <p class="eyebrow">Caso de estudio · Full stack</p>
-          <h1>DriversApp</h1>
-          <p class="lead">Plataforma de transporte para conductores de taxi en Bogotá: app móvil, API, panel de administración y web pública.</p>
-          <div class="actions">
+          <p class="eyebrow r">Caso de estudio · Full stack</p>
+          <h1 class="r" style="--d:60ms">DriversApp</h1>
+          <p class="lead r" style="--d:120ms">Plataforma de transporte para conductores de taxi en Bogotá: app móvil, API, panel de administración y web pública.</p>
+          <div class="actions r" style="--d:180ms">
             <a class="btn btn-primary" href="#repos">Ver el código</a>
             <a class="btn btn-secondary" href="#flujo">Cómo funciona un viaje</a>
           </div>
         </div>
-        <div class="phone">
+        <div class="phone r" style="--d:120ms">
           <video id="demo" src="media/demo.mp4" poster="media/demo-poster.jpg" autoplay muted loop playsinline
                  aria-label="Video: el conductor recibe una solicitud, navega, verifica el código, cobra y califica al pasajero"></video>
         </div>
       </div>
 
       <section aria-labelledby="que">
-        <h2 id="que">Qué resuelve</h2>
+        <h2 id="que" class="r">Qué resuelve</h2>
         <div class="features">
-          <div class="feature"><div class="dot"></div><h3>Solicitudes por WhatsApp</h3><p>El pasajero pide el viaje en un chat; la API lo cotiza y busca un conductor disponible.</p></div>
-          <div class="feature"><div class="dot"></div><h3>Viajes en tiempo real</h3><p>Oferta al conductor, navegación paso a paso, código de verificación y cobro.</p></div>
-          <div class="feature"><div class="dot"></div><h3>Registro con IA en el teléfono</h3><p>OCR de documentos, detección de rostro y validación de fotos del vehículo con ML Kit.</p></div>
-          <div class="feature"><div class="dot"></div><h3>Membresías con pagos</h3><p>Suscripción de los conductores con checkout y webhook de Wompi.</p></div>
+          <div class="feature r" style="--d:0ms"><div class="dot"></div><h3>Solicitudes por WhatsApp</h3><p>El pasajero pide el viaje en un chat; la API lo cotiza y busca un conductor disponible.</p></div>
+          <div class="feature r" style="--d:80ms"><div class="dot"></div><h3>Viajes en tiempo real</h3><p>Oferta al conductor, navegación paso a paso, código de verificación y cobro.</p></div>
+          <div class="feature r" style="--d:160ms"><div class="dot"></div><h3>Registro con IA en el teléfono</h3><p>OCR de documentos, detección de rostro y validación de fotos del vehículo con ML Kit.</p></div>
+          <div class="feature r" style="--d:240ms"><div class="dot"></div><h3>Membresías con pagos</h3><p>Suscripción de los conductores con checkout y webhook de Wompi.</p></div>
         </div>
       </section>
 
       <section id="flujo" aria-labelledby="flujo-t">
-        <h2 id="flujo-t">Cómo funciona un viaje</h2>
-        <p class="lead">Cinco momentos de un mismo viaje: lo que ve el pasajero, lo que ve el conductor y lo que hace el sistema.</p>
+        <h2 id="flujo-t" class="r">Cómo funciona un viaje</h2>
+        <p class="lead r" style="--d:80ms">Cinco momentos de un mismo viaje: lo que ve el pasajero, lo que ve el conductor y lo que hace el sistema.</p>
         <ol class="moments">
           <li class="moment">
-            <div>
+            <div class="r">
               <span class="num">1</span>
               <h3>El pasajero pide el taxi</h3>
               <p class="what">Comparte su origen y destino por WhatsApp y confirma la tarifa estimada. El conductor está conectado, esperando viajes.</p>
               <p class="behind"><b>En el sistema:</b> La API calcula la ruta y cotiza en unidades, con recargos nocturnos, festivos y de aeropuerto.</p>
             </div>
-            <div class="phones"><figure><img src="media/wa-02.webp" alt="Chat con el resumen del servicio: origen, destino y tarifa estimada" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure><img src="media/app-04-en-linea.webp" alt="App del conductor en línea, buscando viajes" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
+            <div class="phones"><figure class="r" style="--d:140ms"><img src="media/wa-02.webp" alt="Chat con el resumen del servicio: origen, destino y tarifa estimada" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-04-en-linea.webp" alt="App del conductor en línea, buscando viajes" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
           </li>
           <li class="moment">
-            <div>
+            <div class="r">
               <span class="num">2</span>
               <h3>Un conductor acepta</h3>
               <p class="what">El conductor ve la ruta, la distancia y el precio, y acepta. Al pasajero le llegan el nombre del conductor, la placa y un código.</p>
               <p class="behind"><b>En el sistema:</b> La oferta pasa de un conductor disponible al siguiente, con un minuto para responder. Ese estado vive en Redis.</p>
             </div>
-            <div class="phones"><figure><img src="media/wa-03.webp" alt="Chat con el conductor asignado, la placa y el código de verificación" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure><img src="media/app-05-solicitud.webp" alt="Nueva solicitud con ruta, distancia y rango de precio" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
+            <div class="phones"><figure class="r" style="--d:140ms"><img src="media/wa-03.webp" alt="Chat con el conductor asignado, la placa y el código de verificación" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-05-solicitud.webp" alt="Nueva solicitud con ruta, distancia y rango de precio" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
           </li>
           <li class="moment">
-            <div>
+            <div class="r">
               <span class="num">3</span>
               <h3>Recogida verificada</h3>
               <p class="what">El pasajero escanea el QR del taxi para confirmar placa y conductor. El conductor ingresa el código que recibió el pasajero.</p>
               <p class="behind"><b>En el sistema:</b> El código de 4 dígitos se genera al asignar el viaje y la API lo valida antes de iniciarlo.</p>
             </div>
-            <div class="phones"><figure><img src="media/web-vehicle.webp" alt="Página del vehículo con la placa, abierta desde el QR" loading="lazy" width="720" height="1565"><figcaption>Pasajero · Web</figcaption></figure><figure><img src="media/app-08-codigo.webp" alt="Campo para ingresar el código de verificación" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
+            <div class="phones"><figure class="r" style="--d:140ms"><img src="media/web-vehicle.webp" alt="Página del vehículo con la placa, abierta desde el QR" loading="lazy" width="720" height="1565"><figcaption>Pasajero · Web</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-08-codigo.webp" alt="Campo para ingresar el código de verificación" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
           </li>
           <li class="moment">
-            <div>
+            <div class="r">
               <span class="num">4</span>
               <h3>Camino al destino</h3>
               <p class="what">El conductor navega paso a paso. El pasajero sigue el taxi en vivo desde el enlace del chat.</p>
               <p class="behind"><b>En el sistema:</b> La app envía su ubicación GPS cada pocos segundos y la web la consulta periódicamente.</p>
             </div>
-            <div class="phones"><figure><img src="media/web-map.webp" alt="Mapa en vivo del viaje con conductor, placa y tarifa" loading="lazy" width="720" height="1565"><figcaption>Pasajero · Web</figcaption></figure><figure><img src="media/app-10-en-curso.webp" alt="Navegación paso a paso hacia el destino" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
+            <div class="phones"><figure class="r" style="--d:140ms"><img src="media/web-map.webp" alt="Mapa en vivo del viaje con conductor, placa y tarifa" loading="lazy" width="720" height="1565"><figcaption>Pasajero · Web</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-10-en-curso.webp" alt="Navegación paso a paso hacia el destino" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
           </li>
           <li class="moment">
-            <div>
+            <div class="r">
               <span class="num">5</span>
               <h3>Pago y calificación</h3>
               <p class="what">Al llegar, el conductor cobra en efectivo y ambos se califican.</p>
               <p class="behind"><b>En el sistema:</b> El valor final se calcula con la distancia y el tiempo real del viaje; las calificaciones actualizan el promedio de cada uno.</p>
             </div>
-            <div class="phones"><figure><img src="media/wa-04.webp" alt="Chat con el valor final y la solicitud de calificación" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure><img src="media/app-12-cobro.webp" alt="Viaje finalizado con el valor a cobrar" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
+            <div class="phones"><figure class="r" style="--d:140ms"><img src="media/wa-04.webp" alt="Chat con el valor final y la solicitud de calificación" loading="lazy" width="720" height="1565"><figcaption>Pasajero · WhatsApp</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-12-cobro.webp" alt="Viaje finalizado con el valor a cobrar" loading="lazy" width="720" height="1565"><figcaption>Conductor · App</figcaption></figure></div>
           </li>
         </ol>
-        <p class="note">Las pantallas de WhatsApp son una recreación con los mensajes reales del bot. Todos los datos son de demostración.</p>
+        <p class="note r">Las pantallas de WhatsApp son una recreación con los mensajes reales del bot. Todos los datos son de demostración.</p>
+      </section>
+
+      <section aria-labelledby="panel-t">
+        <h2 id="panel-t" class="r">Panel de operación</h2>
+        <p class="lead r" style="--d:80ms">El equipo valida conductores y vehículos, ajusta las tarifas y gestiona las membresías desde la web.</p>
+        <figure class="shot main r" style="--d:0ms"><div class="browser"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="media/admin-vehicles.webp" alt="Lista de vehículos con contadores de validados y pendientes, dueño, estado y disponibilidad" loading="lazy" width="1600" height="1000"></div><figcaption>Vehículos: dueño, estado de validación y disponibilidad de cada placa.</figcaption></figure>
+        <div class="shots">
+          <figure class="shot r" style="--d:0ms"><div class="browser"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div><a href="media/admin-vehicle-detail.webp" aria-label="Ver imagen completa"><img src="media/admin-vehicle-detail.webp" alt="Detalle de un vehículo pendiente con botón para validarlo" loading="lazy" width="1100" height="688"></a></div><figcaption>Detalle de un vehículo pendiente, con documentos y QR.</figcaption></figure>
+          <figure class="shot r" style="--d:100ms"><div class="browser"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div><a href="media/admin-fares.webp" aria-label="Ver imagen completa"><img src="media/admin-fares.webp" alt="Configuración del precio por unidad y de los recargos" loading="lazy" width="1100" height="688"></a></div><figcaption>Precio por unidad y recargos que usa la cotización.</figcaption></figure>
+          <figure class="shot r" style="--d:200ms"><div class="browser"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div><a href="media/admin-subscriptions.webp" aria-label="Ver imagen completa"><img src="media/admin-subscriptions.webp" alt="Planes de membresía, promociones y pagos" loading="lazy" width="1100" height="688"></a></div><figcaption>Planes, promociones y pagos de las membresías.</figcaption></figure>
+        </div>
       </section>
 
       <section aria-labelledby="arq">
-        <h2 id="arq">Arquitectura</h2>
+        <h2 id="arq" class="r">Arquitectura</h2>
         <div class="arch">
           <div class="col">
-            <div class="node">Pasajero<small>WhatsApp Business</small></div>
-            <div class="node">App del conductor<small>Flutter</small></div>
-            <div class="node">Panel de administración<small>Next.js</small></div>
-            <div class="node">Web pública<small>Next.js</small></div>
+            <div class="node r" style="--d:0ms">Pasajero<small>WhatsApp Business</small></div>
+            <div class="node r" style="--d:70ms">App del conductor<small>Flutter</small></div>
+            <div class="node r" style="--d:140ms">Panel de administración<small>Next.js</small></div>
+            <div class="node r" style="--d:210ms">Web pública<small>Next.js</small></div>
           </div>
-          <div class="arrow" aria-hidden="true"><span>→</span>REST · WebSocket</div>
-          <div class="node core">API<small>Kotlin · Micronaut</small></div>
-          <div class="arrow" aria-hidden="true"><span>→</span></div>
+          <div class="arrow r" style="--d:280ms" aria-hidden="true"><span>→</span>REST · WebSocket</div>
+          <div class="node core r" style="--d:350ms">API<small>Kotlin · Micronaut</small></div>
+          <div class="arrow r" style="--d:420ms" aria-hidden="true"><span>→</span></div>
           <div class="col">
-            <div class="node">PostgreSQL<small>3 bases · Flyway</small></div>
-            <div class="node">Redis<small>ubicación y ofertas</small></div>
-            <div class="node">Mapbox · S3 · Firebase<small>rutas, archivos, push</small></div>
-            <div class="node">Wompi<small>pagos</small></div>
+            <div class="node r" style="--d:490ms">PostgreSQL<small>3 bases · Flyway</small></div>
+            <div class="node r" style="--d:560ms">Redis<small>ubicación y ofertas</small></div>
+            <div class="node r" style="--d:630ms">Mapbox · S3 · Firebase<small>rutas, archivos, push</small></div>
+            <div class="node r" style="--d:700ms">Wompi<small>pagos</small></div>
           </div>
         </div>
         <ul class="notes">
-          <li><b>Bases separadas por dominio:</b> usuarios, viajes y clientes, cada una con sus migraciones.</li>
-          <li><b>Estado en tiempo real en Redis:</b> conductores disponibles, ofertas y códigos de verificación.</li>
-          <li><b>Asignación por turnos:</b> la oferta pasa de un conductor disponible al siguiente, con un minuto para responder.</li>
-          <li><b>Chat del viaje:</b> WebSocket en la app del conductor y WhatsApp para el pasajero.</li>
+          <li class="r" style="--d:0ms"><b>Bases separadas por dominio:</b> usuarios, viajes y clientes, cada una con sus migraciones.</li>
+          <li class="r" style="--d:70ms"><b>Estado en tiempo real en Redis:</b> conductores disponibles, ofertas y códigos de verificación.</li>
+          <li class="r" style="--d:140ms"><b>Asignación por turnos:</b> la oferta pasa de un conductor disponible al siguiente, con un minuto para responder.</li>
+          <li class="r" style="--d:210ms"><b>Chat del viaje:</b> WebSocket en la app del conductor y WhatsApp para el pasajero.</li>
         </ul>
       </section>
 
       <section id="repos" aria-labelledby="repos-t">
-        <h2 id="repos-t">Código</h2>
+        <h2 id="repos-t" class="r">Código</h2>
         <div class="repos">
-          <a class="repo" href="https://github.com/StephanSuarez/driversapp-mobile"><h3>driversapp-mobile</h3><p>App del conductor</p><div class="tags"><span>Flutter</span><span>Mapbox</span><span>ML Kit</span><span>Firebase</span></div></a>
-          <a class="repo" href="https://github.com/StephanSuarez/driversapp-api"><h3>driversapp-api</h3><p>API y lógica de negocio</p><div class="tags"><span>Kotlin</span><span>Micronaut</span><span>PostgreSQL</span><span>Redis</span></div></a>
-          <a class="repo" href="https://github.com/StephanSuarez/driversapp-admin"><h3>driversapp-admin</h3><p>Panel de operación</p><div class="tags"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Tailwind</span></div></a>
-          <a class="repo" href="https://github.com/StephanSuarez/driversapp-web"><h3>driversapp-web</h3><p>Páginas públicas del pasajero</p><div class="tags"><span>Next.js</span><span>Mapbox GL</span><span>TypeScript</span></div></a>
+          <a class="repo r" style="--d:0ms" href="https://github.com/StephanSuarez/driversapp-mobile"><h3>driversapp-mobile</h3><p>App del conductor</p><div class="tags"><span>Flutter</span><span>Mapbox</span><span>ML Kit</span><span>Firebase</span></div></a>
+          <a class="repo r" style="--d:70ms" href="https://github.com/StephanSuarez/driversapp-api"><h3>driversapp-api</h3><p>API y lógica de negocio</p><div class="tags"><span>Kotlin</span><span>Micronaut</span><span>PostgreSQL</span><span>Redis</span></div></a>
+          <a class="repo r" style="--d:140ms" href="https://github.com/StephanSuarez/driversapp-admin"><h3>driversapp-admin</h3><p>Panel de operación</p><div class="tags"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Tailwind</span></div></a>
+          <a class="repo r" style="--d:210ms" href="https://github.com/StephanSuarez/driversapp-web"><h3>driversapp-web</h3><p>Páginas públicas del pasajero</p><div class="tags"><span>Next.js</span><span>Mapbox GL</span><span>TypeScript</span></div></a>
         </div>
       </section>
     </main>
@@ -269,6 +303,21 @@
     </footer>
   </div>
   <script>
+    // Navegadores sin IntersectionObserver: todo visible desde el inicio.
+    if (!('IntersectionObserver' in window)) document.documentElement.classList.remove('js');
+    const observer = 'IntersectionObserver' in window && new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        const el = e.target;
+        el.classList.add('in');
+        observer.unobserve(el);
+        // Al terminar de aparecer se quitan las clases para que el hover no herede el retraso.
+        const wait = 450 + (parseInt(getComputedStyle(el).getPropertyValue('--d')) || 0);
+        setTimeout(() => el.classList.remove('r', 'in'), wait + 50);
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+    if (observer) document.querySelectorAll('.r').forEach((el) => observer.observe(el));
+
     // Sin reproducción automática para quien prefiere menos movimiento.
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const v = document.getElementById('demo');
