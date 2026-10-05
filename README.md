@@ -1,5 +1,5 @@
-# DriversApp · Caso de estudio
+# SUMA · Caso de estudio
 
-Página del caso de estudio de DriversApp: https://stephansuarez.github.io/driversapp-site/
+Página del caso de estudio de SUMA (antes DriversApp): https://stephansuarez.github.io/driversapp-site/
 
-Capturas y video grabados con datos de demostración.
+Capturas grabadas con datos de demostración; el chat de WhatsApp es una recreación con los mensajes reales del bot.
