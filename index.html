@@ -106,6 +106,10 @@
     .phones img { width: 100%; height: auto; display: block; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); }
     .phones figcaption { margin-top: 10px; text-align: center; font-size: 14px; color: var(--muted); }
     .note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+    .moment.solo { border-top: 0; }
+    .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+    .points h3 { font-size: 20px; }
+    .points p { margin: 6px 0 0; }
 
     /* Panel de operación */
     .shot { margin: 0; }
@@ -262,6 +266,22 @@
           </li>
         </ol>
         <p class="note r">Las pantallas de WhatsApp son una recreación con los mensajes reales del bot. Todos los datos son de demostración.</p>
+      </section>
+
+      <section aria-labelledby="cond-t">
+        <h2 id="cond-t" class="r">Para los conductores</h2>
+        <p class="lead r" style="--d:80ms">La misma app con la que reciben viajes les sirve para elegir vehículo, recargar saldo y ver la comisión de cada viaje antes de aceptarlo.</p>
+        <div class="moment solo">
+          <div class="r">
+            <ul class="points">
+              <li><h3>Carro o moto, según la jornada</h3><p>Un conductor puede registrar carros y motos, o manejar el vehículo de otro dueño que lo invite. Al conectarse elige con cuál trabaja ese día y solo recibe viajes de ese tipo. Cada vehículo lo usa un conductor a la vez.</p></li>
+              <li><h3>Saldo prepago</h3><p>Recarga desde la app con Nequi, PSE o tarjeta a través de Wompi, y cada recarga aprobada deja su comprobante. Si paga por otro medio, el equipo de SUMA le abona el saldo desde el panel.</p></li>
+              <li><h3>Una comisión por viaje</h3><p>Por cada viaje completado se descuenta del saldo una comisión: un valor fijo o un porcentaje de la tarifa, según el tipo de vehículo. La solicitud le muestra cuánto es antes de aceptar, los viajes cancelados no pagan y, si el saldo no alcanza, ese viaje no le llega. El pasajero le paga directamente al conductor.</p></li>
+            </ul>
+            <p class="behind"><b>En el sistema:</b> Se cobra la comisión vigente cuando el conductor aceptó el viaje; un cambio en el panel no altera los viajes que ya están en curso.</p>
+          </div>
+          <div class="phones"><figure class="r" style="--d:140ms"><img src="media/app-06-vehiculos.webp" alt="Selector de la app para elegir el vehículo de la jornada: una moto MTO12D y un carro JHK413 del mismo dueño" loading="lazy" width="720" height="1565"><figcaption>Conductor · Vehículo</figcaption></figure><figure class="r" style="--d:260ms"><img src="media/app-07-saldo.webp" alt="Pantalla de Saldo: $27.000 disponibles, botón para recargar, dos recargas sin completar marcadas como vencidas, una recarga por Nequi de $20.000 y un cargo de $400 por viaje" loading="lazy" width="720" height="1565"><figcaption>Conductor · Saldo</figcaption></figure></div>
+        </div>
       </section>
 
       <section aria-labelledby="panel-t">
