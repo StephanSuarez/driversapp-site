@@ -78,7 +78,12 @@
       background: #0e0e0e;
       box-shadow: 0 24px 60px rgba(0, 13, 28, 0.14);
     }
-    .phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .phone video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .demo { justify-self: center; display: grid; justify-items: center; gap: 14px; }
+    .play { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .play svg { width: 14px; height: 14px; fill: currentColor; }
+    .play .i-play, .play.paused .i-pause { display: none; }
+    .play.paused .i-play { display: block; }
 
     /* Qué resuelve */
     .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
@@ -183,9 +188,16 @@
             <a class="btn btn-primary" href="#flujo">Cómo funciona un viaje</a>
           </div>
         </div>
-        <div class="phone r" style="--d:120ms">
-          <img src="media/web-seguimiento.webp" width="720" height="1565"
-               alt="Página de seguimiento de la pasajera: tu conductor va en camino, Andrés Rojas en moto con placa MTO12D, conductor verificado y el código de seguridad">
+        <div class="demo r" style="--d:120ms">
+          <div class="phone">
+            <video id="demo" src="media/suma-demo.mp4" poster="media/suma-demo-poster.webp" width="540" height="1174" autoplay muted loop playsinline
+                   aria-label="Video: la pasajera pide una moto por WhatsApp, el conductor acepta en la app, llega a la recogida, valida el código 2475, la lleva a la Universidad de Cundinamarca, cobra $4.000 en efectivo y ambos califican"></video>
+          </div>
+          <button class="play" type="button">
+            <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>
+            <span>Pausar video</span>
+          </button>
         </div>
       </div>
 
@@ -294,7 +306,7 @@
     </main>
 
     <footer>
-      <span>Capturas con datos de demostración: personas, placas y documentos son ficticios; el chat de WhatsApp es una recreación con los mensajes reales del bot.</span>
+      <span>Capturas y video con datos de demostración: personas, placas y documentos son ficticios; el chat de WhatsApp es una recreación con los mensajes reales del bot.</span>
       <span><a href="https://github.com/StephanSuarez">@StephanSuarez</a> · <a href="https://github.com/jhonatandgomez">@jhonatandgomez</a></span>
     </footer>
   </div>
@@ -331,6 +343,22 @@
     viewer.addEventListener('click', () => viewer.close());
     viewer.addEventListener('close', () => { if (history.state?.viewer) history.back(); });
     addEventListener('popstate', () => { if (viewer.open) viewer.close(); });
+
+    const demo = document.getElementById('demo');
+    const play = document.querySelector('.play');
+    const showPaused = (paused) => {
+      play.classList.toggle('paused', paused);
+      play.querySelector('span').textContent = paused ? 'Reproducir video' : 'Pausar video';
+    };
+    play.addEventListener('click', () => (demo.paused ? demo.play() : demo.pause()));
+    demo.addEventListener('play', () => showPaused(false));
+    demo.addEventListener('pause', () => showPaused(true));
+    showPaused(demo.paused);
+    // Sin reproducción automática para quien prefiere menos movimiento.
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      demo.removeAttribute('autoplay');
+      demo.pause();
+    }
   </script>
 </body>
 </html>
